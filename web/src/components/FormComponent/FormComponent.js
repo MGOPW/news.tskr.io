@@ -10,6 +10,7 @@ import {
   Select,
   Spacer,
   Flex,
+  Switch,
 } from '@chakra-ui/react'
 import { useAuth } from '@redwoodjs/auth'
 import { Fragment } from 'react'
@@ -67,6 +68,32 @@ const FormComponent = ({
         </FormErrorMessage>
       </FormControl>
     )
+    if (field.type === 'boolean') {
+      html = (
+        <FormControl
+          pt={field.pt}
+          key={field.name}
+          isInvalid={errors[field.name]}
+          display="flex"
+          alignItems="center"
+        >
+          <FormLabel htmlFor={field.name}>{field.prettyName}</FormLabel>
+          <Switch
+            colorScheme="green"
+            id={field.name}
+            readOnly={field.readOnly || false}
+            {...register(field.name, {
+              required: field?.required || false,
+            })}
+            defaultChecked={record?.[field.name] || field.defaultValue}
+            //isChecked={record?.[field.name] || field.defaultValue}
+          />
+          <FormErrorMessage>
+            {errors[field.name] && errors[field.name].message}
+          </FormErrorMessage>
+        </FormControl>
+      )
+    }
     if (field.type === 'password') {
       html = (
         <PasswordField

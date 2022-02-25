@@ -8,6 +8,10 @@
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 
 import { Set, Router, Route, Private } from '@redwoodjs/router'
+import FeedItemParticipantsLayout from 'src/layouts/FeedItemParticipantsLayout'
+import ParticipantsLayout from 'src/layouts/ParticipantsLayout'
+import FeedItemsLayout from 'src/layouts/FeedItemsLayout'
+import FeedsLayout from 'src/layouts/FeedsLayout'
 import LogsLayout from 'src/layouts/LogsLayout'
 import MessagesLayout from 'src/layouts/MessagesLayout'
 import PropertiesLayout from 'src/layouts/PropertiesLayout'
@@ -30,9 +34,33 @@ const Routes = () => {
       <Set wrap={Standard}>
         <Route path="/logout" page={LogoutPage} name="logout" />
         <Route path="/" page={HomePage} name="home" />
+        <Route path="/feed-items" page={FeedItemFeedItemsPage} name="feedItems" />
+        <Route path="/feed-items/new" page={FeedItemNewFeedItemPage} name="newFeedItem" />
+        <Route path="/feed-items/{id:Int}" page={FeedItemEditFeedItemPage} name="feedItem" />
         <Private unauthenticated="home">
           <Route path="/about" page={AboutPage} name="about" />
           <Route path="/my-profile" page={MyProfilePage} name="myProfile" />
+          <Set wrap={FeedItemParticipantsLayout}>
+            <Route path="/feed-item-participants/new" page={FeedItemParticipantNewFeedItemParticipantPage} name="newFeedItemParticipant" />
+            <Route path="/feed-item-participants/{id:Int}/edit" page={FeedItemParticipantEditFeedItemParticipantPage} name="editFeedItemParticipant" />
+            <Route path="/feed-item-participants/{id:Int}" page={FeedItemParticipantFeedItemParticipantPage} name="feedItemParticipant" />
+            <Route path="/feed-item-participants" page={FeedItemParticipantFeedItemParticipantsPage} name="feedItemParticipants" />
+          </Set>
+          <Set wrap={FeedItemsLayout}>
+            <Route path="/feed-items/{id:Int}/edit" page={FeedItemEditFeedItemPage} name="editFeedItem" />
+          </Set>
+          <Set wrap={ParticipantsLayout}>
+            <Route path="/participants/new" page={ParticipantNewParticipantPage} name="newParticipant" />
+            <Route path="/participants/{id:Int}/edit" page={ParticipantEditParticipantPage} name="editParticipant" />
+            <Route path="/participants/{id:Int}" page={ParticipantParticipantPage} name="participant" />
+            <Route path="/participants" page={ParticipantParticipantsPage} name="participants" />
+          </Set>
+          <Set wrap={FeedsLayout}>
+            <Route path="/feeds/new" page={FeedNewFeedPage} name="newFeed" />
+            <Route path="/feeds/{id:Int}/edit" page={FeedEditFeedPage} name="editFeed" />
+            <Route path="/feeds/{id:Int}" page={FeedEditFeedPage} name="feed" />
+            <Route path="/feeds" page={FeedFeedsPage} name="feeds" />
+          </Set>
           <Set wrap={MessagesLayout}>
             <Route path="/messages/new" page={MessageNewMessagePage} name="newMessage" />
             <Route path="/messages/{id:Int}" page={MessageEditMessagePage} name="editMessage" />

@@ -4,8 +4,8 @@ import { useAuth } from '@redwoodjs/auth'
 import SidebarWithHeader from 'src/components/SidebarWithHeader'
 import Footer from 'src/components/Footer'
 import { Fragment } from 'react'
-const Standard = ({ children }) => {
-  const { isAuthenticated, currentUser } = useAuth()
+const Standard = ({ children, isAuthenticated, currentUser }) => {
+  //const { isAuthenticated, currentUser } = useAuth()
   const brand = 'Seedling'
   let myProps = {
     brand,
@@ -15,15 +15,7 @@ const Standard = ({ children }) => {
   return (
     <Fragment>
       <CookieModal />
-      {isAuthenticated && currentUser && (
-        <SidebarWithHeader {...myProps}>{children}</SidebarWithHeader>
-      )}
-      {!isAuthenticated && (
-        <Fragment>
-          <AboutPage />
-          <Footer />
-        </Fragment>
-      )}
+      <SidebarWithHeader {...myProps}>{children}</SidebarWithHeader>
     </Fragment>
   )
 }

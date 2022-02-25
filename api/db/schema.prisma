@@ -81,6 +81,7 @@ model Group {
   description String
   GroupMember GroupMember[]
   GroupRole   GroupRole[]
+  Feed        Feed[]
 }
 
 model GroupMember {
@@ -112,4 +113,49 @@ model Log {
   context   Json
   message   String
   source    String
+}
+
+model FeedItem {
+  id                  Int                   @id @default(autoincrement())
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  title               String                @default("Undefined")
+  url                 String                @unique
+  active              Boolean               @default(true)
+  FeedItemParticipant FeedItemParticipant[]
+  feedId              Int
+  feed                Feed                  @relation(fields: [feedId], references: [id], onDelete: Cascade)
+}
+
+model Feed {
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  active      Boolean    @default(true)
+  rssUrl      String?
+  title       String
+  description String
+  imageUrl    String?
+  groupId     Int
+  group       Group      @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  FeedItem    FeedItem[]
+}
+
+model Participant {
+  id                  Int                   @id @default(autoincrement())
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  active              Boolean               @default(true)
+  name                String?
+  FeedItemParticipant FeedItemParticipant[]
+}
+
+model FeedItemParticipant {
+  id            Int         @id @default(autoincrement())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  feedItemId    Int
+  feedItem      FeedItem    @relation(fields: [feedItemId], references: [id], onDelete: Cascade)
+  participantId Int
+  participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
 }

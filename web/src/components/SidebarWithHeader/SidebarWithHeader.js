@@ -85,6 +85,9 @@ const SidebarContent = ({ brand, onClose, ...rest }) => {
   const { hasRole } = useAuth()
   const LinkItems = [
     { name: 'Home', icon: MdHome, navigateTo: 'home' },
+    { name: '+Item', icon: MdPerson, role: '', navigateTo: 'newFeedItem' },
+    { name: 'Items', icon: MdPerson, role: '', navigateTo: 'feedItems' },
+    { name: 'Feeds', icon: MdPerson, role: 'feedCreate', navigateTo: 'feeds' },
     { name: 'Users', icon: MdPerson, role: 'userRead', navigateTo: 'users' },
     { name: 'Groups', icon: MdGroups, role: 'groupRead', navigateTo: 'groups' },
     {
@@ -147,6 +150,7 @@ const SidebarContent = ({ brand, onClose, ...rest }) => {
       </Flex>
       {LinkItems.map((link) => (
         <NavItem
+          size={'sm'}
           key={link.name}
           icon={link.icon}
           navigateTo={link.navigateTo}
@@ -258,7 +262,7 @@ const MobileNav = ({ brand, onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">{currentUser.name}</Text>
+                  <Text fontSize="sm">{currentUser?.name}</Text>
                   {/*<Text fontSize="xs" color="gray.600">
                     {JSON.stringify(currentUser)}
                   </Text>*/}

@@ -149,14 +149,18 @@ const TableRows = ({
       )
     if (column.dataType === 'timestamp')
       return <Box p="2">{new Date(row[column.accessor]).toLocaleString()}</Box>
+    if (column.dataType === 'boolean') {
+      let bool = 'false'
+      if (row[column.accessor] === true) bool = 'true'
+      return <Box p="2">{bool}</Box>
+    }
     if (row?.[column.accessor])
       return (
         <>
           {menu(row, column)}
-          <Box p="2">{row[column.accessor]}</Box>
+          <Box p="2">{row[column.accessor].toString()}</Box>
         </>
       )
-
     if (column.accessor === 'actions') {
       if (hasRole([roles.deleteRecord].concat(['admin']))) {
         return (
