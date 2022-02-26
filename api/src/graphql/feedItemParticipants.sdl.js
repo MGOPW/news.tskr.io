@@ -24,11 +24,9 @@ export const schema = gql`
       take: Int
       orderBy: OrderByInput
       q: String
-    ): FeedItemParticipants!
-      @requireAuth(roles: ["feedItemParticipantRead", "admin"])
+    ): FeedItemParticipants! @skipAuth
 
-    feedItemParticipant(id: Int!): FeedItemParticipant
-      @requireAuth(roles: ["feedItemParticipantRead", "admin"])
+    feedItemParticipant(id: Int!): FeedItemParticipant @skipAuth
   }
 
   input CreateFeedItemParticipantInput {

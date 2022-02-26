@@ -32,5 +32,6 @@ export const schema = gql`
     "on GroupMember"
     user: Sort
     language: Sort
+    title: Sort
   }
 `

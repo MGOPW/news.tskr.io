@@ -84,9 +84,13 @@ const SidebarWithHeader = ({ brand, children }) => {
 const SidebarContent = ({ brand, onClose, ...rest }) => {
   const { hasRole } = useAuth()
   const LinkItems = [
-    { name: 'Home', icon: MdHome, navigateTo: 'home' },
     { name: '+Item', icon: MdPerson, role: '', navigateTo: 'newFeedItem' },
-    { name: 'Items', icon: MdPerson, role: '', navigateTo: 'feedItems' },
+    {
+      name: 'Items',
+      icon: MdPerson,
+      role: 'feedItemCreate',
+      navigateTo: 'feedItems',
+    },
     { name: 'Feeds', icon: MdPerson, role: 'feedCreate', navigateTo: 'feeds' },
     { name: 'Users', icon: MdPerson, role: 'userRead', navigateTo: 'users' },
     { name: 'Groups', icon: MdGroups, role: 'groupRead', navigateTo: 'groups' },
@@ -101,12 +105,6 @@ const SidebarContent = ({ brand, onClose, ...rest }) => {
       icon: MdWork,
       role: 'groupRoleRead',
       navigateTo: 'groupRoles',
-    },
-    {
-      name: 'Preferences',
-      icon: MdRoomPreferences,
-      roles: 'preferenceRead',
-      navigateTo: 'preferences',
     },
     {
       name: 'Properties',
@@ -126,7 +124,6 @@ const SidebarContent = ({ brand, onClose, ...rest }) => {
       role: 'admin',
       navigateTo: 'logs',
     },
-    { name: 'Logout', icon: MdLogout, navigateTo: 'logout' },
   ].filter((item) => {
     return hasRole(item.role) || hasRole('admin') || !item.role
   })
@@ -150,6 +147,8 @@ const SidebarContent = ({ brand, onClose, ...rest }) => {
       </Flex>
       {LinkItems.map((link) => (
         <NavItem
+          pt={0}
+          pb={0}
           size={'sm'}
           key={link.name}
           icon={link.icon}

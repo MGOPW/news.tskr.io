@@ -30,7 +30,7 @@ export const schema = gql`
       q: String
     ): Feeds! @requireAuth(roles: ["feedRead", "admin"])
 
-    feed(id: Int!): Feed @requireAuth(roles: ["feedRead", "admin"])
+    feed(id: Int!): Feed @skipAuth #@requireAuth(roles: ["feedRead", "admin"])
   }
 
   input CreateFeedInput {

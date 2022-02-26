@@ -110,6 +110,13 @@ const TableRows = ({
   }
   let element = (row, column) => {
     let nestedElements = row[column?.accessor]?.length
+    if (column.outSideLink) {
+      return (
+        <Box p="2">
+          <Link href={row[column.url]}>{row[column.title]}</Link>
+        </Box>
+      )
+    }
     if (column.aggregate && column.link)
       return <Link to={column.link(row.id)}>{nestedElements}</Link>
     if (column.aggregate) return { nestedElements }

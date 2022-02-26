@@ -1,5 +1,6 @@
-import AboutComponent from 'src/components/AboutComponent'
+//import AboutComponent from 'src/components/AboutComponent'
+import Welcome from 'src/components/Welcome/Welcome'
 const HomePage = () => {
-  return <AboutComponent />
+  return <Welcome />
 }
 export default HomePage
