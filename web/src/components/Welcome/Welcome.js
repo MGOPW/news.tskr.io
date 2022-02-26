@@ -33,30 +33,6 @@ export const initialColumns = [
     filterOut,
     dataType: 'timestamp',
   },
-  {
-    Header: 'Source',
-    accessor: '_feedTitle',
-    canSort: false,
-    //showMatching,
-    //filterOut,
-    dataType: 'integer',
-    // If this is a reference
-    // you may want to show a field
-    // instead of the number here.
-    // to do that remove type,
-    // updated your query on the cell to include the model
-    // update the accessor to a name not used by a column
-    // and add;
-    // canSort: false,
-    // reference: true,
-    // model: '_insertSingularModelHere_',
-    // field: '_fieldFromModelHere_',
-    // link: (givenId) => {
-    //   // e.g. return routes._insertPluralModelHere_({ q: {"id": givenId}})
-    //   // e.g. return routes.users({ q: `{"id": }` })// link to a list w/the query
-    //   // e.g. return routes.user({ q: `{"id": }` })// link to the record
-    // },
-  },
 
   {
     Header: '⚙️',

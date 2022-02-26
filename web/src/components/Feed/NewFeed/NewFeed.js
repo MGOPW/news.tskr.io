@@ -36,7 +36,8 @@ const NewFeed = () => {
     {
       name: 'active',
       prettyName: 'Active',
-      required: 'This is required',
+      type: 'boolean',
+      defaultValue: 'true',
     },
 
     {
@@ -67,25 +68,26 @@ const NewFeed = () => {
       required: 'This is required',
       // If this is a reference you probably want this below
       // uncomment and edit below to your needs
-      // type: 'reference',
-      // display: 'name',
-      // value: 'id',
-      // QUERY: gql`
-      //   query FindgroupIdHereFromFeeds(
-      //     $filter: String
-      //     $skip: Int
-      //   ) {
-      //     search: removethisdot.referencedPluralModelHere(filter: $filter, skip: $skip) {
-      //       count
-      //       take
-      //       skip
-      //       results {
-      //         id
-      //         name
-      //       }
-      //     }
-      //   }
-      // `,
+      type: 'reference',
+      display: 'name',
+      value: 'id',
+      QUERY: gql`
+        query FindgroupIdHereFromFeeds(
+          $filter: String
+          $skip: Int
+          $take: Int
+        ) {
+          search: groups(filter: $filter, skip: $skip, take: $take) {
+            count
+            take
+            skip
+            results {
+              id
+              name
+            }
+          }
+        }
+      `,
     },
   ]
 

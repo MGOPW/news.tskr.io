@@ -1,9 +1,11 @@
+import { log } from 'src/lib/util'
+
 module.exports = {
   active: true, //           controls if this runs
   order: 10, //              controls the order this runs
   when: ['before'], //       used to filter rules to run
   operation: ['readAll'], // used to filter rules to run
-  table: 'log', //         used to filter rules to run
+  table: 'feed', //         used to filter rules to run
   file: __filename, //       used for logging
   command: async function ({ where, filter, q }) {
     // if (!context.currentUser.roles.includes('admin')) {
@@ -26,7 +28,7 @@ module.exports = {
           OR: [JSON.parse(q)],
         })
       } catch (error) {
-        console.log('cannot parse from rule', error)
+        await log(`cannot parse from rule${JSON.stringify(error)}`)
       }
     }
     return { where }

@@ -6,7 +6,7 @@
 # https://redwoodjs.com/docs/app-configuration-redwood-toml
 
 [web]
-  title = "Seedling"
+  title = "news.jace.pro"
   port = 8910
   apiUrl = "/.netlify/functions"
 [api]

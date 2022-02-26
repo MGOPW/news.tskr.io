@@ -29,7 +29,7 @@ export const schema = gql`
   }
 
   type Query {
-    searchItems(
+    searchPublicItems(
       filter: String
       skip: Int
       take: Int
@@ -45,6 +45,6 @@ export const schema = gql`
   }
 
   type Mutation {
-    createItem(input: CreateItemInput!): Item! @skipAuth
+    createPublicItem(input: CreateItemInput!): Item! @skipAuth
   }
 `

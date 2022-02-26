@@ -11,6 +11,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Badge,
 } from '@chakra-ui/react'
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { useMutation } from '@redwoodjs/web'
@@ -113,7 +114,15 @@ const TableRows = ({
     if (column.outSideLink) {
       return (
         <Box p="2">
+          <Badge m={2}>{row._feedTitle}</Badge>
           <Link href={row[column.url]}>{row[column.title]}</Link>
+          {row?._participants.map((person, index) => {
+            return (
+              <Badge key={`${row}-person-${index}`} m={2}>
+                {person.name}
+              </Badge>
+            )
+          })}
         </Box>
       )
     }

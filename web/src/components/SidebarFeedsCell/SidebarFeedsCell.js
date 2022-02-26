@@ -1,7 +1,29 @@
+import { Box } from '@chakra-ui/react'
+import NavItem from '../NavItem/NavItem'
 export const QUERY = gql`
-  query SidebarFeedsQuery {
-    sidebarFeeds {
-      id
+  query searchPublicFeeds(
+    $filter: String
+    $skip: Int
+    $take: Int
+    $q: String
+    $orderBy: OrderByInput
+  ) {
+    feeds: searchPublicFeeds(
+      filter: $filter
+      skip: $skip
+      take: $take
+      q: $q
+      orderBy: $orderBy
+    ) {
+      count
+      take
+      skip
+      q
+      results {
+        id
+        title
+        createdAt
+      }
     }
   }
 `
@@ -14,13 +36,31 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error.message}</div>
 )
 
-export const Success = ({ sidebarFeeds }) => {
+export const Success = ({ feeds }) => {
+  //return JSON.stringify(feeds)
   return (
-    <ul>
-      {sidebarFeeds.map((item) => {
-        return <li key={item.id}>{JSON.stringify(item)}</li>
-      })}
-    </ul>
+    <Box>
+      <NavItem navigateTo={'home'}>All</NavItem>
+
+      <Box overflow={'scroll'} height={'100vh'}>
+        <ul>
+          {feeds.results.map((feed) => {
+            return (
+              <NavItem
+                pt={0}
+                pb={0}
+                size={'sm'}
+                key={feed.id}
+                navigateTo={'home'}
+                query={{ q: `{"feedId":${feed.id}}` }}
+              >
+                {feed.title}
+              </NavItem>
+            )
+          })}
+        </ul>
+      </Box>
+    </Box>
   )
 }
 /**

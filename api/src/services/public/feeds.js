@@ -7,9 +7,9 @@ import {
   executeAfterReadAllRulesV2,
 } from 'src/lib/rules'
 
-let table = 'feedItem'
+let table = 'feed'
 
-export const createItem = async ({ input }) => {
+export const createPublicFeed = async ({ input }) => {
   try {
     let { data } = await executeBeforeCreateRulesV2({ table, data: input })
     let createdRecord = await db[table].create({ data })
@@ -25,16 +25,16 @@ export const createItem = async ({ input }) => {
   }
 }
 
-export const searchItems = async ({ filter, skip, orderBy, q, take }) => {
+export const searchPublicFeeds = async ({ filter, skip, orderBy, q, take }) => {
   try {
     let preferences = context?.currentUser?.preferences
     let _take = (() => {
       let limit =
         take ||
-        parseInt(preferences?.['feeditem.pageSize'], 10) ||
+        parseInt(preferences?.['feed.pageSize'], 10) ||
         parseInt(preferences?.['pageSize'], 10 || 10) ||
-        10
-      if (limit > 100) return 100 //return 100 or limit whatever is smaller
+        1000
+      //if (limit > 100) return 100 //return 100 or limit whatever is smaller
       return limit
     })()
     let { where } = await executeBeforeReadAllRulesV2({ table, filter, q })
@@ -53,26 +53,6 @@ export const searchItems = async ({ filter, skip, orderBy, q, take }) => {
       table,
       data: readRecords,
     })
-    records = records.map(async (root) => {
-      let feed = await db.feed.findUnique({ where: { id: root.feedId } })
-      let participants = await db.FeedItemParticipant.findMany({
-        where: { feedItemId: root.id },
-        select: { participant: { select: { name: true } } },
-      })
-      participants = participants.map((participant) => {
-        console.log(participant)
-        return {
-          name: participant.participant.name,
-          id: participant.participant.id,
-        }
-      })
-      return {
-        ...root,
-        _feedTitle: feed.title,
-        _feedId: feed.id,
-        _participants: participants, //JSON.stringify(participants),
-      }
-    })
 
     return {
       results: records,
@@ -86,9 +66,4 @@ export const searchItems = async ({ filter, skip, orderBy, q, take }) => {
   }
 }
 
-export const FeedItem = {
-  //FeedItemParticipants: (_obj, { root }) =>
-  //  db.FeedItem.findUnique({ where: { id: root.id } }).FeedItemParticipant(),
-  //feed: async (_obj, { root }) =>
-  //  await db.feed.findUnique({ where: { id: root.feedId } }),
-}
+export const Feed = {}

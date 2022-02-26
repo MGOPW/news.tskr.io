@@ -34,7 +34,9 @@ import {
   MdOutlineKeyboardArrowDown,
   MdSettingsApplications,
 } from 'react-icons/md'
+import SidebarFeedsCell from 'src/components/SidebarFeedsCell'
 import { useAuth } from '@redwoodjs/auth'
+import NavItem from '../NavItem/NavItem'
 // interface LinkItemProps {
 //   name: string;
 //   icon: IconType;
@@ -158,52 +160,49 @@ const SidebarContent = ({ brand, onClose, ...rest }) => {
           {link.name}
         </NavItem>
       ))}
+      <hr />
+      <SidebarFeedsCell />
     </Box>
   )
 }
 
-// interface NavItemProps extends FlexProps {
-//   icon: IconType;
-//   children: ReactText;
+// const NavItem = ({ icon, navigateTo, children, ...rest }) => {
+//   return (
+//     <NavLink
+//       to={routes[navigateTo]()}
+//       className="link"
+//       activeClassName="activeLink"
+//       style={{ textDecoration: 'none' }}
+//       _focus={{ boxShadow: 'none' }}
+//     >
+//       <Flex
+//         align="center"
+//         p="4"
+//         mx="4"
+//         borderRadius="lg"
+//         role="group"
+//         cursor="pointer"
+//         _hover={{
+//           bg: 'cyan.400',
+//           color: 'white',
+//         }}
+//         {...rest}
+//       >
+//         {icon && (
+//           <Icon
+//             mr="4"
+//             fontSize="16"
+//             _groupHover={{
+//               color: 'white',
+//             }}
+//             as={icon}
+//           />
+//         )}
+//         {children}
+//       </Flex>
+//     </NavLink>
+//   )
 // }
-// const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
-const NavItem = ({ icon, navigateTo, children, ...rest }) => {
-  return (
-    <NavLink
-      to={routes[navigateTo]()}
-      className="link"
-      activeClassName="activeLink"
-      style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}
-    >
-      <Flex
-        align="center"
-        p="4"
-        mx="4"
-        borderRadius="lg"
-        role="group"
-        cursor="pointer"
-        _hover={{
-          bg: 'cyan.400',
-          color: 'white',
-        }}
-        {...rest}
-      >
-        {icon && (
-          <Icon
-            mr="4"
-            fontSize="16"
-            _groupHover={{
-              color: 'white',
-            }}
-            as={icon}
-          />
-        )}
-        {children}
-      </Flex>
-    </NavLink>
-  )
-}
 
 // interface MobileProps extends FlexProps {
 //   onOpen: () => void;

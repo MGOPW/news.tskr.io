@@ -23,15 +23,16 @@ export const beforeQuery = (props) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { search } = useLocation()
   let params = new URLSearchParams(search)
+  let variables = {
+    q: params.get('q'),
+    filter: params.get('filter') || props.fuzzyQuery,
+    skip: params.get('skip') || props.skip || 0,
+    take: params.get('take') || props.take || 10,
+    orderBy: params.get('orderBy') || props.orderBy,
+  }
+  //console.log(variables)
   return {
-    variables: {
-      q: params.get('q'),
-      filter: params.get('filter') || props.fuzzyQuery,
-      skip: params.get('skip') || props.skip || 0,
-      take: params.get('take') || props.take || 10,
-      orderBy: params.get('orderBy') || props.orderBy,
-    },
-
+    variables,
     fetchPolicy: 'no-cache',
   }
 }
@@ -39,14 +40,14 @@ export const beforeQuery = (props) => {
 // ["feedId"] you may want to update the query
 // below to include the related values
 export const QUERY = gql`
-  query searchItems(
+  query searchPublicItems(
     $filter: String
     $skip: Int
     $take: Int
     $q: String
     $orderBy: OrderByInput
   ) {
-    feedItems: searchItems(
+    feedItems: searchPublicItems(
       filter: $filter
       skip: $skip
       take: $take
@@ -62,6 +63,7 @@ export const QUERY = gql`
         title
         url
         createdAt
+        feedId
         _feedTitle
         _feedId
         _participants {
