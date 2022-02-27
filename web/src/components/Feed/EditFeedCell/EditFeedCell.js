@@ -14,6 +14,7 @@ export const QUERY = gql`
       active
       rssUrl
       title
+      feedIcon
       description
       imageUrl
       groupId
@@ -33,6 +34,7 @@ const UPDATE_FEED_MUTATION = gql`
       active
       rssUrl
       title
+      feedIcon
       description
       imageUrl
       groupId
@@ -98,6 +100,11 @@ export const Success = ({ feed }) => {
     {
       name: 'rssUrl',
       prettyName: 'Rss url',
+    },
+
+    {
+      name: 'feedIcon',
+      prettyName: 'Feed Icon (Text, Audio, Video)',
     },
 
     {

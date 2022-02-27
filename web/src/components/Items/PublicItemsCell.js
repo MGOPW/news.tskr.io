@@ -122,7 +122,7 @@ export const Success = ({
               onClick={() => {
                 setQuery('')
                 setFuzzyQuery('')
-                navigate(routes.feedItems({}))
+                navigate(routes.home({}))
               }}
             >
               All feedItems

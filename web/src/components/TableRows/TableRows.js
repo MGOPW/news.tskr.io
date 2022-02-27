@@ -114,17 +114,24 @@ const TableRows = ({
     if (column.outSideLink) {
       return (
         <Box p="2">
-          <Badge m={2}>{row._feedTitle}</Badge>
-          <a href={row[column.url]} target={'_blank'} rel="noreferrer">
-            {row[column.title]}
-          </a>
-          {row?._participants.map((person, index) => {
-            return (
-              <Badge key={`${row}-person-${index}`} m={2}>
-                {person.name}
-              </Badge>
-            )
-          })}
+          <Box>
+            <Badge m={2}>{row._feedTitle}</Badge>
+            <a href={row[column.url]} target={'_blank'} rel="noreferrer">
+              {row[column.title]}
+            </a>
+          </Box>
+          <Box>
+            {/*<Button as={Badge} backgroundColor={'blue'} size={'xs'}>
+              Add
+            </Button>*/}
+            {row?._participants.map((person, index) => {
+              return (
+                <Box key={`${row}-person-${index}`}>
+                  <Badge m={2}>{person.name}</Badge>
+                </Box>
+              )
+            })}
+          </Box>
         </Box>
       )
     }

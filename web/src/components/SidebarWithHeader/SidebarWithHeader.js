@@ -161,55 +161,12 @@ const SidebarContent = ({ brand, onClose, ...rest }) => {
         </NavItem>
       ))}
       <hr />
-      <SidebarFeedsCell />
+      <SidebarFeedsCell orderBy={{ title: 'asc' }} />
     </Box>
   )
 }
-
-// const NavItem = ({ icon, navigateTo, children, ...rest }) => {
-//   return (
-//     <NavLink
-//       to={routes[navigateTo]()}
-//       className="link"
-//       activeClassName="activeLink"
-//       style={{ textDecoration: 'none' }}
-//       _focus={{ boxShadow: 'none' }}
-//     >
-//       <Flex
-//         align="center"
-//         p="4"
-//         mx="4"
-//         borderRadius="lg"
-//         role="group"
-//         cursor="pointer"
-//         _hover={{
-//           bg: 'cyan.400',
-//           color: 'white',
-//         }}
-//         {...rest}
-//       >
-//         {icon && (
-//           <Icon
-//             mr="4"
-//             fontSize="16"
-//             _groupHover={{
-//               color: 'white',
-//             }}
-//             as={icon}
-//           />
-//         )}
-//         {children}
-//       </Flex>
-//     </NavLink>
-//   )
-// }
-
-// interface MobileProps extends FlexProps {
-//   onOpen: () => void;
-// }
-// const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 const MobileNav = ({ brand, onOpen, ...rest }) => {
-  const { currentUser, logOut } = useAuth()
+  const { isAuthenticated, currentUser, logOut } = useAuth()
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -281,16 +238,27 @@ const MobileNav = ({ brand, onOpen, ...rest }) => {
               >
                 Profile
               </MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
+              {/*<MenuItem>Settings</MenuItem>
+              <MenuItem>Billing</MenuItem>*/}
               <MenuDivider />
-              <MenuItem
-                onClick={() => {
-                  logOut()
-                }}
-              >
-                Sign out
-              </MenuItem>
+              {isAuthenticated && (
+                <MenuItem
+                  onClick={() => {
+                    logOut()
+                  }}
+                >
+                  Sign out
+                </MenuItem>
+              )}
+              {!isAuthenticated && (
+                <MenuItem
+                  onClick={() => {
+                    navigate(routes.login())
+                  }}
+                >
+                  Log in
+                </MenuItem>
+              )}
             </MenuList>
           </Menu>
         </Flex>

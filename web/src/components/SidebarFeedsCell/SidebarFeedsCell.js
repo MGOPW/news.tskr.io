@@ -1,5 +1,7 @@
 import { Box } from '@chakra-ui/react'
 import NavItem from '../NavItem/NavItem'
+import { Icon } from '@chakra-ui/react'
+import { MdTextSnippet, MdAudiotrack, MdVideoLibrary } from 'react-icons/md'
 export const QUERY = gql`
   query searchPublicFeeds(
     $filter: String
@@ -22,6 +24,7 @@ export const QUERY = gql`
       results {
         id
         title
+        feedIcon
         createdAt
       }
     }
@@ -37,14 +40,26 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ feeds }) => {
-  //return JSON.stringify(feeds)
+  //Prisma doesnt do case-insensitve sorting
+  //https://github.com/prisma/prisma/issues/5068
+  let sorted = [...feeds.results]
+  sorted.sort((a, b) => {
+    try {
+      if (a.title.toUpperCase() < b.title.toUpperCase()) return -1
+      if (a.title.toUpperCase() > b.title.toUpperCase()) return 1
+
+      return 0
+    } catch (e) {
+      console.log('error', e)
+    }
+  })
   return (
     <Box>
       <NavItem navigateTo={'home'}>All</NavItem>
 
       <Box overflow={'scroll'} height={'100vh'}>
         <ul>
-          {feeds.results.map((feed) => {
+          {sorted.map((feed) => {
             return (
               <NavItem
                 pt={0}
@@ -54,6 +69,9 @@ export const Success = ({ feeds }) => {
                 navigateTo={'home'}
                 query={{ q: `{"feedId":${feed.id}}` }}
               >
+                {feed?.feedIcon === 'Text' && <Icon as={MdTextSnippet} />}
+                {feed?.feedIcon === 'Audio' && <Icon as={MdAudiotrack} />}
+                {feed?.feedIcon === 'Video' && <Icon as={MdVideoLibrary} />}
                 {feed.title}
               </NavItem>
             )
@@ -63,82 +81,3 @@ export const Success = ({ feeds }) => {
     </Box>
   )
 }
-/**
- * const SidebarContent = ({ brand, onClose, ...rest }) => {
-  const { hasRole } = useAuth()
-  const LinkItems = [
-    { name: 'Home', icon: MdHome, navigateTo: 'home' },
-    { name: 'Users', icon: MdPerson, role: 'userRead', navigateTo: 'users' },
-    { name: 'Groups', icon: MdGroups, role: 'groupRead', navigateTo: 'groups' },
-    {
-      name: 'Group Members',
-      icon: MdPersonOutline,
-      role: 'groupMemberRead',
-      navigateTo: 'groupMembers',
-    },
-    {
-      name: 'Group roles',
-      icon: MdWork,
-      role: 'groupRoleRead',
-      navigateTo: 'groupRoles',
-    },
-    {
-      name: 'Preferences',
-      icon: MdRoomPreferences,
-      roles: 'preferenceRead',
-      navigateTo: 'preferences',
-    },
-    {
-      name: 'Properties',
-      icon: MdSettings,
-      role: 'propertyRead',
-      navigateTo: 'properties',
-    },
-    {
-      name: 'Messages',
-      icon: MdLanguage,
-      role: 'messageRead',
-      navigateTo: 'messages',
-    },
-    {
-      name: 'Logs',
-      icon: MdSettingsApplications,
-      role: 'admin',
-      navigateTo: 'logs',
-    },
-    { name: 'Logout', icon: MdLogout, navigateTo: 'logout' },
-  ].filter((item) => {
-    return hasRole(item.role) || hasRole('admin') || !item.role
-  })
-
-  return (
-    <Box
-      transition="3s ease"
-      bg={useColorModeValue('white', 'gray.900')}
-      borderRight="1px"
-      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-      w={{ base: 'full', md: 60 }}
-      pos="fixed"
-      h="full"
-      {...rest}
-    >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          {brand}
-        </Text>
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
-      </Flex>
-      {LinkItems.map((link) => (
-        <NavItem
-          key={link.name}
-          icon={link.icon}
-          navigateTo={link.navigateTo}
-          onClick={onClose}
-        >
-          {link.name}
-        </NavItem>
-      ))}
-    </Box>
-  )
-}
- */

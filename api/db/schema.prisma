@@ -128,26 +128,30 @@ model FeedItem {
 }
 
 model Feed {
-  id          Int        @id @default(autoincrement())
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  active      Boolean    @default(true)
-  rssUrl      String?
-  title       String
-  description String
-  imageUrl    String?
-  groupId     Int
-  group       Group      @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  FeedItem    FeedItem[]
+  id                  Int           @id @default(autoincrement())
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  active              Boolean       @default(true)
+  rssUrl              String?
+  title               String
+  description         String
+  imageUrl            String?
+  feedIcon            String        @default("")
+  defaultParticipants Participant[]
+  groupId             Int
+  group               Group         @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  FeedItem            FeedItem[]
 }
 
 model Participant {
-  id                  Int                   @id @default(autoincrement())
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
-  active              Boolean               @default(true)
-  name                String?
-  FeedItemParticipant FeedItemParticipant[]
+  id                     Int                   @id @default(autoincrement())
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+  active                 Boolean               @default(true)
+  name                   String?
+  role                   String                @default("participant")
+  FeedItemParticipant    FeedItemParticipant[]
+  defaultFeedParticipant Feed[]
 }
 
 model FeedItemParticipant {

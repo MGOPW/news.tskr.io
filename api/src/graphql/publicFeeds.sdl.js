@@ -4,6 +4,7 @@ export const schema = gql`
     createdAt: DateTime!
     rssUrl: String
     imageUrl: String
+    feedIcon: String
     title: String!
     url: String!
   }

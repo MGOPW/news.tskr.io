@@ -6,6 +6,7 @@ export const schema = gql`
     active: Boolean!
     rssUrl: String
     title: String!
+    feedIcon: String
     description: String!
     imageUrl: String
     groupId: Int!
@@ -46,6 +47,7 @@ export const schema = gql`
     active: Boolean
     rssUrl: String
     title: String
+    feedIcon: String
     description: String
     imageUrl: String
     groupId: Int
