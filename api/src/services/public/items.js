@@ -37,7 +37,6 @@ export const searchPublicItems = async ({ filter, skip, orderBy, q, take }) => {
       if (limit > 100) return 100 //return 100 or limit whatever is smaller
       return limit
     })()
-    console.log(q, filter)
     let { where } = await executeBeforeReadAllRulesV2({ table, filter, q })
     console.log(where)
     where = { AND: [{ active: { equals: true } }, ...where] } //nest all queries in an "AND"
@@ -50,6 +49,11 @@ export const searchPublicItems = async ({ filter, skip, orderBy, q, take }) => {
       where,
       orderBy,
       skip, // if this were 101, return skip-take
+      include: {
+        FeedItemParticipant: {
+          include: { participant: true },
+        },
+      },
     })
     let { records, status } = await executeAfterReadAllRulesV2({
       table,

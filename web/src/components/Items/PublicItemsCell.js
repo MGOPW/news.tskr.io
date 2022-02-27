@@ -69,6 +69,13 @@ export const QUERY = gql`
         _participants {
           name
         }
+        FeedItemParticipant {
+          id
+          participant {
+            id
+            name
+          }
+        }
       }
     }
   }

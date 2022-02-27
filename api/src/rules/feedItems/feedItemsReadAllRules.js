@@ -20,11 +20,21 @@ module.exports = {
    * @returns
    */
   command: async function ({ where, filter, q }) {
+    //
     if (filter) {
       where.push({
         OR: [
           // not required
           { title: { contains: filter, mode: 'insensitive' } },
+          {
+            FeedItemParticipant: {
+              some: {
+                participant: {
+                  name: { contains: filter, mode: 'insensitive' },
+                },
+              },
+            },
+          },
         ],
       })
     }
@@ -39,6 +49,7 @@ module.exports = {
         console.error('cannot parse from rule', error)
       }
     }
+    console.log('where', where)
     return { where }
   },
 }

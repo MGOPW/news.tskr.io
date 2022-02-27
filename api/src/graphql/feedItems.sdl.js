@@ -6,7 +6,7 @@ export const schema = gql`
     title: String!
     url: String!
     active: Boolean!
-    FeedItemParticipant: JSON
+    FeedItemParticipant: [FeedItemParticipant]
     feedId: Int!
     feed: Feed!
   }
