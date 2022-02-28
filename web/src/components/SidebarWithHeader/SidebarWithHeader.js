@@ -94,6 +94,18 @@ const SidebarContent = ({ brand, onClose, ...rest }) => {
       navigateTo: 'feedItems',
     },
     { name: 'Feeds', icon: MdPerson, role: 'feedCreate', navigateTo: 'feeds' },
+    {
+      name: 'Participants',
+      icon: MdPerson,
+      role: 'participantsRead',
+      navigateTo: 'participants',
+    },
+    {
+      name: 'Item Participants',
+      icon: MdPerson,
+      role: 'admin',
+      navigateTo: 'feedItemParticipants',
+    },
     { name: 'Users', icon: MdPerson, role: 'userRead', navigateTo: 'users' },
     { name: 'Groups', icon: MdGroups, role: 'groupRead', navigateTo: 'groups' },
     {

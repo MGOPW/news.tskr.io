@@ -1,5 +1,6 @@
 import { logger } from 'src/lib/logger'
 import Parser from 'rss-parser'
+import { db } from 'src/lib/db'
 /**
  * The handler function is your code that processes http request events.
  * You can use return and throw to send a response or error, respectively.
@@ -29,15 +30,31 @@ export const handler = async (event, context) => {
       let returnArr = []
       feed.items.forEach((item) => {
         console.log(item.title + ':' + item.link)
-        returnArr.push({
+        var transformedItem = {
           feedId: parsedBody.id,
           createdAt: item?.isoDate || new Date(), //new Date(feed.pubDate).toISOString()
           title: item?.title || 'No title',
           url: item?.link,
-          creator: item?.creator || item?.['dc:creator'] || item?.author,
-          source: { ...item },
+          //creator: item?.creator || item?.['dc:creator'] || item?.author,
+          FeedItemParticipant: {
+            create: {
+              participant: {
+                data: {
+                  name: item?.creator || item?.['dc:creator'] || item?.author,
+                },
+              },
+            },
+          },
+          //source: { ...item }
+        }
+        returnArr.push(transformedItem)
+        db.feedItem.upsert({
+          where: { url: transformedItem.url },
+          create: transformedItem,
+          update: transformedItem,
         })
       })
+
       //console.log(feed)
       return returnArr
     } catch (error) {

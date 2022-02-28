@@ -124,12 +124,15 @@ const TableRows = ({
             {/*<Button as={Badge} backgroundColor={'blue'} size={'xs'}>
               Add
             </Button>*/}
-            {row?._participants.map((person, index) => {
-              return (
-                <Box key={`${row}-person-${index}`}>
-                  <Badge m={2}>{person.name}</Badge>
-                </Box>
-              )
+            {row?.FeedItemParticipant.map((FIP, index) => {
+              console.log(FIP)
+              if (FIP.participant.active) {
+                return (
+                  <Box key={`${row}-person-${index}`}>
+                    <Badge m={2}>{FIP.participant.name}</Badge>
+                  </Box>
+                )
+              }
             })}
           </Box>
         </Box>

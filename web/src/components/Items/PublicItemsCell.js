@@ -66,14 +66,12 @@ export const QUERY = gql`
         feedId
         _feedTitle
         _feedId
-        _participants {
-          name
-        }
         FeedItemParticipant {
           id
           participant {
             id
             name
+            active
           }
         }
       }

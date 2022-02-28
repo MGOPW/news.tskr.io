@@ -152,6 +152,8 @@ model Participant {
   role                   String                @default("participant")
   FeedItemParticipant    FeedItemParticipant[]
   defaultFeedParticipant Feed[]
+
+  @@unique([name])
 }
 
 model FeedItemParticipant {
@@ -162,4 +164,6 @@ model FeedItemParticipant {
   feedItem      FeedItem    @relation(fields: [feedItemId], references: [id], onDelete: Cascade)
   participantId Int
   participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([feedItemId, participantId])
 }
