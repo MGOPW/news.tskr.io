@@ -39,15 +39,6 @@ export default async ({ args }) => {
           id: feedId,
         },
       },
-      // FeedItemParticipant: {
-      //   create: {
-      //     participant: {
-      //       createOrConnect: {
-      //         name: item?.creator || item?.['dc:creator'] || item?.author,
-      //       },
-      //     },
-      //   },
-      // },
     }
 
     upsertedItems.push(

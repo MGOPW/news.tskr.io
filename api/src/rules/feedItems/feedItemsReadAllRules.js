@@ -49,7 +49,7 @@ module.exports = {
         console.error('cannot parse from rule', error)
       }
     }
-    console.log('where', where)
+    console.log('where', JSON.stringify(where))
     return { where }
   },
 }
