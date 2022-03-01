@@ -9,7 +9,7 @@ export default async ({ args }) => {
   console.log(args)
   let getArticles = async (start) => {
     if (!start) start = 0
-    let end = parseInt(start, 10) + 1000
+    let end = parseInt(start, 10) + 100
     let now = new Date().toISOString()
     let url = `https://community.servicenow.com/api/sn_communities/v1/community/contents?last=${end}&stFrom=${start}&before=${now}&forum=&type=5eaa334a5f10030069c587dc3f73130b&sort=created&filters=undefined`
 
