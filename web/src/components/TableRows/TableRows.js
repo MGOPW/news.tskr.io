@@ -1,6 +1,16 @@
+import {
+  MdOutlineArrowUpward,
+  MdIosShare,
+  MdTextSnippet,
+  MdAudiotrack,
+  MdVideoLibrary,
+  MdPlusOne,
+  MdAdd,
+} from 'react-icons/md'
 import { Link, navigate } from '@redwoodjs/router'
 import { useAuth } from '@redwoodjs/auth'
 import {
+  Icon,
   Button,
   Box,
   Flex,
@@ -12,6 +22,7 @@ import {
   MenuList,
   MenuItem,
   Badge,
+  SimpleGrid,
 } from '@chakra-ui/react'
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { useMutation } from '@redwoodjs/web'
@@ -26,7 +37,24 @@ const TableRows = ({
   displayColumn,
   model,
 }) => {
-  const { hasRole /*currentUser*/ } = useAuth()
+  const { hasRole, isAuthenticated } = useAuth()
+  let handleUpClick = (event) => {
+    if (isAuthenticated) {
+      console.log('upvote to be implemented')
+    }
+  }
+  let handleShareClick = (event) => {
+    try {
+      let item = JSON.parse(event.target.value)
+      navigator?.share({
+        title: item.title,
+        text: `${item.title} from https://news.jace.pro`,
+        url: item.url,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
   let handleDeleteItem = (event) => {
     let id = parseInt(event.target.value, 10)
     let foundRow = data.results?.filter((user) => {
@@ -114,27 +142,47 @@ const TableRows = ({
     if (column.outSideLink) {
       return (
         <Box p="2">
-          <Box>
-            <Badge m={2}>{row._feedTitle}</Badge>
+          <Flex>
+            {/*
+            <Badge m={2}>
+              {row?.feed?.feedIcon === 'Text' && <Icon as={MdTextSnippet} />}
+              {row?.feed?.feedIcon === 'Audio' && <Icon as={MdAudiotrack} />}
+              {row?.feed?.feedIcon === 'Video' && <Icon as={MdVideoLibrary} />}
+              {row?.feed?.title}
+            </Badge>*/}
             <a href={row[column.url]} target={'_blank'} rel="noreferrer">
+              {row?.feed?.feedIcon === 'Text' && <Icon as={MdTextSnippet} />}
+              {row?.feed?.feedIcon === 'Audio' && <Icon as={MdAudiotrack} />}
+              {row?.feed?.feedIcon === 'Video' && <Icon as={MdVideoLibrary} />}
               {row[column.title]}
             </a>
-          </Box>
-          <Box>
-            {/*<Button as={Badge} backgroundColor={'blue'} size={'xs'}>
-              Add
-            </Button>*/}
+          </Flex>
+          <Flex gap={1} alignItems={'flex-end'}>
             {row?.FeedItemParticipant.map((FIP, index) => {
-              console.log(FIP)
+              //console.log(FIP)
               if (FIP.participant.active) {
                 return (
                   <Box key={`${row}-person-${index}`}>
-                    <Badge m={2}>{FIP.participant.name}</Badge>
+                    <Badge colorScheme={'blue'} ml={1} fontSize={'1em'}>
+                      {FIP.participant.name}
+                    </Badge>
                   </Box>
                 )
               }
             })}
-          </Box>
+            {isAuthenticated && (
+              <IconButton
+                value={row.id}
+                onClick={handleUpClick}
+                icon={<MdAdd />}
+                colorScheme="green"
+                variant="solid"
+                type="button"
+                disabled={!isAuthenticated}
+                size="xs"
+              />
+            )}
+          </Flex>
         </Box>
       )
     }
@@ -168,7 +216,9 @@ const TableRows = ({
           <Box p="2">
             <Link title={row[column.accessor]} to={column.link(row.id)}>
               {column.dataType === 'timestamp' && (
-                <>{new Date(row[column.accessor]).toLocaleString()} </>
+                <Badge>
+                  {new Date(row[column.accessor]).toLocaleString('en-CA')}{' '}
+                </Badge>
               )}
               {column.dataType !== 'timestamp' && <>{row[column.accessor]}</>}
             </Link>
@@ -176,7 +226,11 @@ const TableRows = ({
         </>
       )
     if (column.dataType === 'timestamp')
-      return <Box p="2">{new Date(row[column.accessor]).toLocaleString()}</Box>
+      return (
+        <Badge colorScheme={'red'}>
+          {new Date(row[column.accessor]).toLocaleString()}
+        </Badge>
+      )
     if (column.dataType === 'boolean') {
       let bool = 'false'
       if (row[column.accessor] === true) bool = 'true'
@@ -190,23 +244,92 @@ const TableRows = ({
         </>
       )
     if (column.accessor === 'actions') {
-      if (hasRole([roles.deleteRecord].concat(['admin']))) {
-        return (
-          <Box p="2">
-            <Button
-              value={row.id}
-              onClick={handleDeleteItem}
-              leftIcon={<CloseIcon />}
-              colorScheme="red"
-              variant="solid"
-              type="button"
-              size="sm"
-            >
-              Remove
-            </Button>
-          </Box>
-        )
-      }
+      let UpButton = (
+        <>
+          {column?.canUpVote && (
+            <SimpleGrid columns={1} gap={1}>
+              <IconButton
+                value={row.id}
+                onClick={handleUpClick}
+                icon={<MdPlusOne />}
+                colorScheme="green"
+                variant="solid"
+                type="button"
+                size="md"
+              />
+              <Badge colorScheme={'grey'} textAlign={'center'}>
+                {JSON.stringify(row?._count?.UpVote)}
+              </Badge>
+            </SimpleGrid>
+          )}
+        </>
+      )
+      let ShareReportButtons = (
+        <>
+          <SimpleGrid columns={1} gap={1}>
+            {column?.canShare && (
+              <IconButton
+                aria-label="Share"
+                value={JSON.stringify(row)}
+                onClick={handleShareClick}
+                icon={<MdIosShare />}
+                colorScheme="blue"
+                variant="solid"
+                type="button"
+                size="md"
+              />
+            )}
+            {column?.canReport && (
+              <Button
+                size={'xs'}
+                as={Badge}
+                colorScheme={'yellow'}
+                textAlign={'center'}
+              >
+                Report
+              </Button>
+            )}
+          </SimpleGrid>
+        </>
+      )
+      let DeleteButton = (
+        <>
+          <SimpleGrid columns={1} gap={1}>
+            {hasRole([roles.deleteRecord].concat(['admin'])) && (
+              <Button
+                value={row.id}
+                onClick={handleDeleteItem}
+                leftIcon={<CloseIcon />}
+                colorScheme="red"
+                variant="solid"
+                type="button"
+                size="md"
+              >
+                Remove
+              </Button>
+            )}
+            {column?.canReport && (
+              <Button
+                size={'xs'}
+                as={Badge}
+                colorScheme={'yellow'}
+                textAlign={'center'}
+              >
+                Report
+              </Button>
+            )}
+          </SimpleGrid>
+        </>
+      )
+      return (
+        <Box p="2">
+          <Flex gap={1}>
+            {UpButton}
+            {ShareReportButtons}
+            {DeleteButton}
+          </Flex>
+        </Box>
+      )
     }
   }
 

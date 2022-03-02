@@ -63,9 +63,12 @@ export const QUERY = gql`
         title
         url
         createdAt
-        feedId
-        _feedTitle
-        _feedId
+        _count
+        feed {
+          title
+          feedIcon
+          id
+        }
         FeedItemParticipant {
           id
           participant {

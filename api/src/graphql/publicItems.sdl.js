@@ -7,9 +7,7 @@ export const schema = gql`
     FeedItemParticipant: [FeedItemParticipant]
     feedId: Int!
     feed: Feed!
-    _feedTitle: String!
-    _feedId: Int!
-    _participants: [ItemParticipants]!
+    _count: JSON!
   }
 
   type ItemParticipants {

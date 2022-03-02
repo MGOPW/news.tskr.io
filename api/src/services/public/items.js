@@ -53,31 +53,18 @@ export const searchPublicItems = async ({ filter, skip, orderBy, q, take }) => {
         FeedItemParticipant: {
           include: { participant: true },
         },
+        feed: {
+          select: { title: true, feedIcon: true, id: true },
+        },
+        _count: {
+          select: { UpVote: true },
+        },
       },
     })
+    console.log(readRecords)
     let { records, status } = await executeAfterReadAllRulesV2({
       table,
       data: readRecords,
-    })
-    records = records.map(async (root) => {
-      let feed = await db.feed.findUnique({ where: { id: root.feedId } })
-      let participants = await db.FeedItemParticipant.findMany({
-        where: { feedItemId: root.id },
-        select: { participant: { select: { name: true } } },
-      })
-      participants = participants.map((participant) => {
-        console.log(participant)
-        return {
-          name: participant.participant.name,
-          id: participant.participant.id,
-        }
-      })
-      return {
-        ...root,
-        _feedTitle: feed.title,
-        _feedId: feed.id,
-        _participants: participants, //JSON.stringify(participants),
-      }
     })
 
     return {

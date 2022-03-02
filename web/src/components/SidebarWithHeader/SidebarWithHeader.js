@@ -6,7 +6,6 @@ import {
   Flex,
   HStack,
   VStack,
-  Icon,
   useColorModeValue,
   Drawer,
   DrawerContent,
@@ -18,17 +17,14 @@ import {
   MenuItem,
   MenuList,
 } from '@chakra-ui/react'
-import { NavLink, routes, navigate } from '@redwoodjs/router'
+import { routes, navigate } from '@redwoodjs/router'
 import {
   MdGroups,
   MdPerson,
-  MdHome,
   MdPersonOutline,
   MdWork,
-  MdRoomPreferences,
   MdSettings,
   MdLanguage,
-  MdLogout,
   MdMenu,
   MdDoorbell,
   MdOutlineKeyboardArrowDown,

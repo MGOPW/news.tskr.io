@@ -1,16 +1,3 @@
-import {
-  Box,
-  Container,
-  Heading,
-  SimpleGrid,
-  Icon,
-  Text,
-  Stack,
-  HStack,
-  VStack,
-} from '@chakra-ui/react'
-import { CheckIcon } from '@chakra-ui/icons'
-
 import { routes } from '@redwoodjs/router'
 import { Fragment, useState } from 'react'
 import PublicItemsCell from 'src/components/Items/PublicItemsCell'
@@ -25,6 +12,18 @@ export const initialColumns = [
     showMatching,
     filterOut,
     canRemove: false,
+  },
+  {
+    Header: 'Feed',
+    accessor: 'feed',
+    canSort: false,
+    reference: true,
+    field: 'title',
+    link: (givenId) => {
+      //  // e.g. return routes._insertPluralModelHere_({ q: {"id": givenId}})
+      //  // e.g. return routes.users({ q: `{"id": }` })// link to a list w/the query
+      return routes.home({ q: `{"feedId":${givenId}}` }) // link to the record
+    },
   },
   {
     Header: 'Date',
@@ -42,6 +41,9 @@ export const initialColumns = [
     canReset: true,
     canExport: true,
     canSetTake: true,
+    canUpVote: true,
+    canReport: true,
+    canShare: true,
   },
 ]
 

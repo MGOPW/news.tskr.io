@@ -59,6 +59,7 @@ model User {
   resetTokenExpiresAt DateTime? //                       // used for dbAuth
   GroupMember         GroupMember[] @relation("UserGroupMember")
   Preference          Preference[]  @relation("UserPreference")
+  UpVote              UpVote[]
 }
 
 model Preference {
@@ -125,6 +126,7 @@ model FeedItem {
   FeedItemParticipant FeedItemParticipant[]
   feedId              Int
   feed                Feed                  @relation(fields: [feedId], references: [id], onDelete: Cascade)
+  UpVote              UpVote[]
 }
 
 model Feed {
@@ -166,4 +168,15 @@ model FeedItemParticipant {
   participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
 
   @@unique([feedItemId, participantId])
+}
+
+model UpVote {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  feedItemId Int
+  feedItem   FeedItem @relation(fields: [feedItemId], references: [id], onDelete: Cascade)
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, feedItemId])
 }
